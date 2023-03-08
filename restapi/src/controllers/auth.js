@@ -49,8 +49,8 @@ exports.login = async (req, res, next) => {
     const jwtToken = jwt.sign(
       {
         email: user.email,
-        userId: user._id,
         userType: user.userType,
+        userId: user._id,
       },
       'hashedSecret=WP'
       // { expiresIn: '1h' }
