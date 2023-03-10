@@ -5,14 +5,12 @@ const Schema = mongoose.Schema;
 const questionarySchema = new Schema({
   userId: {
     type: Schema.Types.ObjectId,
-    required: true,
     ref: 'User',
   },
   wrongAnswers: [
     {
       questionId: {
         type: Schema.Types.ObjectId,
-        required: true,
         ref: 'Question',
       },
       selectedAnswer: {

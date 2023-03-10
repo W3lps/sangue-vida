@@ -7,10 +7,18 @@ const isAuth = require('../helpers/isAuth');
 
 router.get('/questionary', isAuth, questionaryController.getQuestionary);
 
-router.post(
-  '/finished-questionary',
+router.post('/questionary', isAuth, questionaryController.finishedQuestionary);
+
+router.get(
+  '/see-questionary/:questionaryId',
   isAuth,
-  questionaryController.finishedQuestionary
+  questionaryController.seeOneQuestionary
+);
+
+router.get(
+  '/see-questionaries',
+  isAuth,
+  questionaryController.seeQuestionaries
 );
 
 module.exports = router;

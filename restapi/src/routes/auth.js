@@ -13,6 +13,7 @@ router.post(
     body('email').isEmail().trim(),
     body('password').isLength({ min: 8 }),
     body('userSex').not().isEmpty(),
+    body('telephoneNumber').isLength({ min: 13, max: 13 }).isNumeric(),
   ],
   authController.signup
 );

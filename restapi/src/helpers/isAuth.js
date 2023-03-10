@@ -14,6 +14,7 @@ module.exports = (req, _, next) => {
   }
   if (!decodedToken) errorHandler(401, 'Não autenticado!');
 
+  req.userEmail = decodedToken.email;
   req.userId = decodedToken.userId;
   req.userType = decodedToken.userType;
   next();

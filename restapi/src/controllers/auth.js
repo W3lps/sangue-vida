@@ -5,6 +5,12 @@ const jwt = require('jsonwebtoken');
 const errorHandler = require('../helpers/errorHandler');
 const checkStatusCode = require('../helpers/checkStatusCode');
 const inputValidator = require('../helpers/inputValidator');
+const sendMail = require('../helpers/sendMail');
+
+const emailContent = `
+  Bem vindo(a) a iniciativa Sangue é Vida! 
+  Faça o seu teste agora e ajude a nossa causa!
+`;
 
 exports.signup = async (req, res) => {
   inputValidator({ req });
@@ -13,6 +19,7 @@ exports.signup = async (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
   const userSex = req.body.userSex;
+  const telephone = req.body.telephoneNumber;
 
   try {
     const checkEmail = await User.findOne({ email: email });
@@ -26,9 +33,10 @@ exports.signup = async (req, res) => {
       password: hashedPassword,
       sex: userSex,
       userType: 'doador',
+      telephoneNumber: telephone,
     });
-    user.save();
-
+    await user.save();
+    sendMail(emailContent, 'Bem Vindo!', email);
     res.status(201).json({ message: 'Created', user: user._id });
   } catch (err) {
     checkStatusCode(err, next);
@@ -52,8 +60,8 @@ exports.login = async (req, res, next) => {
         userType: user.userType,
         userId: user._id,
       },
-      'hashedSecret=WP'
-      // { expiresIn: '1h' }
+      'hashedSecret=WP',
+      { expiresIn: '1h' }
     );
     res.status(200).json({ token: jwtToken });
   } catch (err) {
